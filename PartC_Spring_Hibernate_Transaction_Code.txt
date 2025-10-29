@@ -1,0 +1,74 @@
+// Part C: Spring + Hibernate Transaction Management
+
+package com.example.springhibernate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "accounts")
+class Account {
+    @Id
+    private int id;
+    private double balance;
+
+    public int getId() { return id; }
+    public double getBalance() { return balance; }
+    public void setBalance(double balance) { this.balance = balance; }
+}
+
+interface AccountDAO {
+    Account findById(int id);
+    void update(Account account);
+}
+
+@Repository
+class AccountDAOImpl implements AccountDAO {
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public Account findById(int id) {
+        return entityManager.find(Account.class, id);
+    }
+
+    public void update(Account account) {
+        entityManager.merge(account);
+    }
+}
+
+@Service
+class BankingService {
+    @Autowired
+    private AccountDAO accountDAO;
+
+    @Transactional
+    public void transferMoney(int fromId, int toId, double amount) {
+        Account from = accountDAO.findById(fromId);
+        Account to = accountDAO.findById(toId);
+
+        from.setBalance(from.getBalance() - amount);
+        to.setBalance(to.getBalance() + amount);
+
+        accountDAO.update(from);
+        accountDAO.update(to);
+    }
+}
+
+@Configuration
+@ComponentScan("com.example.springhibernate")
+@EnableTransactionManagement
+class AppConfig {}
+
+public class MainApp {
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        BankingService service = context.getBean(BankingService.class);
+        service.transferMoney(1, 2, 500.00);
+        context.close();
+    }
+}

@@ -1,0 +1,67 @@
+// Part B: Hibernate CRUD Operations
+
+package com.example.hibernatecrud;
+
+import org.hibernate.*;
+import org.hibernate.cfg.Configuration;
+import javax.persistence.*;
+
+@Entity
+@Table(name = "students")
+class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "course")
+    private String course;
+
+    public Student() {}
+    public Student(String name, String course) {
+        this.name = name;
+        this.course = course;
+    }
+
+    // Getters and setters omitted for brevity
+}
+
+public class HibernateCRUD {
+    public static void main(String[] args) {
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(Student.class).buildSessionFactory();
+        Session session = factory.getCurrentSession();
+
+        try {
+            // CREATE
+            Student student = new Student("John Doe", "Spring Boot");
+            session.beginTransaction();
+            session.save(student);
+            session.getTransaction().commit();
+
+            // READ
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            Student s = session.get(Student.class, student.getId());
+            System.out.println("Retrieved: " + s.getName());
+            session.getTransaction().commit();
+
+            // UPDATE
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            s = session.get(Student.class, student.getId());
+            s.setCourse("Hibernate ORM");
+            session.getTransaction().commit();
+
+            // DELETE
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            session.delete(s);
+            session.getTransaction().commit();
+
+        } finally {
+            factory.close();
+        }
+    }
+}
