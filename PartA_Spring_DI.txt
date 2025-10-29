@@ -1,0 +1,14 @@
+Java Applications Using Spring and Hibernate
+
+Part A: Dependency Injection in Spring Using Java-Based Configuration
+
+Objective:
+To create a simple Spring application that demonstrates Dependency Injection (DI) using Java-based configuration instead of XML.
+
+Explanation:
+- Create two classes: Student and Course.
+- Student depends on Course.
+- Use annotations: @Configuration, @Bean.
+- Use AnnotationConfigApplicationContext to load context and retrieve Student bean.
+
+This demonstrates how Spring manages object creation and wiring through DI without XML configuration.

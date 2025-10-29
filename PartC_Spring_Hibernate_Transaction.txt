@@ -1,0 +1,14 @@
+Java Applications Using Spring and Hibernate
+
+Part C: Transaction Management Using Spring and Hibernate
+
+Objective:
+To create a banking system using Spring and Hibernate that handles money transfers with transaction consistency.
+
+Explanation:
+- Create Account and Transaction entities.
+- Annotate service layer methods with @Transactional.
+- Implement transfer logic: deduct from one account, add to another.
+- Rollback transaction automatically if any operation fails.
+
+This demonstrates declarative transaction management and integration of Spring services with Hibernate persistence.

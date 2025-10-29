@@ -1,0 +1,14 @@
+Java Applications Using Spring and Hibernate
+
+Part B: Hibernate Application for Student CRUD Operations
+
+Objective:
+To perform Create, Read, Update, and Delete operations on a Student entity stored in MySQL using Hibernate ORM.
+
+Explanation:
+- Annotate Student class with @Entity, @Id, @Column.
+- Configure Hibernate via hibernate.cfg.xml or Java config.
+- Use SessionFactory and Session for database interactions.
+- Perform CRUD operations using save(), get(), update(), delete().
+
+This demonstrates ORM mapping, session management, and database CRUD using Hibernate.
